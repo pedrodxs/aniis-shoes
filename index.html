@@ -3276,7 +3276,7 @@ input, select, textarea { font: inherit; color: inherit; }
 .sync-panel {
   position: relative;
   z-index: 2;
-  width: min(1060px, 100%);
+  width: min(780px, 100%);
   max-height: 92svh;
   overflow: auto;
   background: var(--paper);
@@ -3311,8 +3311,8 @@ input, select, textarea { font: inherit; color: inherit; }
 .sync-panel__head > p:last-child { max-width: 540px; color: var(--muted); font-size: .9rem; line-height: 1.6; }
 .sync-panel__body {
   display: grid;
-  grid-template-columns: .88fr 1.12fr;
-  min-height: 430px;
+  grid-template-columns: 1fr;
+  min-height: 0;
 }
 .sync-console {
   display: flex;
@@ -4169,6 +4169,15 @@ input, select, textarea { font: inherit; color: inherit; }
   .desk-login__form .desk-customer-link { grid-column: 1; grid-row: 5; align-self: end; margin-top: 7px; }
 }
 
+@media (orientation: landscape) and (max-height: 560px) {
+  .sync-panel { max-height: 96svh; }
+  .sync-panel__head { padding: 18px 26px 14px; }
+  .sync-panel__head h2 { margin: 6px 0 8px; font-size: clamp(2.4rem, 5vw, 3.2rem); }
+  .sync-panel__head > p:last-child { font-size: .8rem; line-height: 1.45; }
+  .sync-orders { padding: 18px 26px 22px; }
+  .sync-orders__head { margin-bottom: 12px; }
+}
+
 /* ============================================================
    ANIIS — precision cursor
    ============================================================ */
@@ -4360,7 +4369,7 @@ html.has-custom-cursor select { cursor: auto; }
         <a href="#jordan" class="nav__link">Editorial</a>
       </nav>
       <div class="header__actions">
-        <button class="icon-btn account-btn" id="accountBtn" type="button" aria-label="Open cloud account and orders">
+        <button class="icon-btn account-btn" id="accountBtn" type="button" aria-label="Open your orders">
           <svg class="icon"><use href="#i-user"/></svg>
           <span class="cloud-dot" id="cloudDotHeader" aria-hidden="true"></span>
         </button>
@@ -4771,8 +4780,8 @@ html.has-custom-cursor select { cursor: auto; }
       <div class="footer__cloud">
         <button class="cloud-chip" type="button" data-open-sync>
           <span class="cloud-chip__dot" id="footerCloudDot"></span>
-          <span class="cloud-chip__copy"><strong id="footerCloudLabel">ANIIS Cloud</strong><small id="footerCloudDetail">Connecting secure sync…</small></span>
-          <span class="cloud-chip__action"><svg class="icon"><use href="#i-refresh"/></svg> Sync now</span>
+          <span class="cloud-chip__copy"><strong id="footerCloudLabel">Your orders</strong><small id="footerCloudDetail">Track orders and delivery updates</small></span>
+          <span class="cloud-chip__action"><svg class="icon"><use href="#i-arrow"/></svg> View</span>
         </button>
         <div class="footer__pay" aria-label="Accepted payments">
           <span>VISA</span><span>Mastercard</span><span>AMEX</span><span>Apple Pay</span>
@@ -4919,7 +4928,7 @@ html.has-custom-cursor select { cursor: auto; }
       <button class="icon-btn checkout__close" type="button" data-close aria-label="Close checkout"><svg class="icon"><use href="#i-close"/></svg></button>
       <div class="checkout__main" id="checkoutMain">
         <header class="checkout__head">
-          <p class="eyebrow">Secure checkout — ANIIS Cloud</p>
+          <p class="eyebrow">Secure checkout</p>
           <h2 id="checkoutTitle">COMPLETE <em>YOUR ORDER.</em></h2>
         </header>
         <form class="checkout__form" id="checkoutForm" novalidate>
@@ -4941,11 +4950,11 @@ html.has-custom-cursor select { cursor: auto; }
             <label class="field field--full"><span>Card number</span><input type="text" name="card" inputmode="numeric" autocomplete="cc-number" required placeholder="4242 4242 4242 4242"></label>
             <label class="field"><span>Expiry</span><input type="text" name="expiry" inputmode="numeric" autocomplete="cc-exp" required placeholder="MM / YY"></label>
             <label class="field"><span>CVC</span><input type="text" name="cvc" inputmode="numeric" autocomplete="cc-csc" required placeholder="123"></label>
-            <p class="form-note field--full">Payment is simulated in this concept store. Card details never leave this page — only your order details are saved securely to ANIIS Cloud.</p>
+            <p class="form-note field--full">Payment is simulated in this concept store. Card details never leave this page — only your order details are saved securely.</p>
           </fieldset>
           <div class="checkout__cloud" id="checkoutCloudStatus">
             <span class="cloud-dot"></span>
-            <span>Secured by ANIIS Cloud · automatic retry</span>
+            <span>Saved securely · automatic retry</span>
           </div>
           <button class="btn btn--solid checkout__submit" type="submit" id="checkoutSubmit">Place order — <span id="checkoutTotal">$0</span></button>
         </form>
@@ -4958,10 +4967,10 @@ html.has-custom-cursor select { cursor: auto; }
         <div class="checkout__check"><svg class="icon"><use href="#i-check"/></svg></div>
         <p class="eyebrow">Order confirmed</p>
         <h2>YOU'RE <em>IN.</em></h2>
-        <p class="checkout__success-copy">Order <strong id="orderNumber">ANIIS-000000</strong> is confirmed for <span id="orderEmail">your email</span>. Your selection is now in the studio queue.</p>
+        <p class="checkout__success-copy">Order <strong id="orderNumber">ANIIS-000000</strong> is confirmed for <span id="orderEmail">your email</span>. We're preparing your order now.</p>
         <div class="order-cloud-status" id="orderCloudStatus">
           <span class="cloud-dot"></span>
-          <span id="orderCloudNote">Saved securely to ANIIS Cloud.</span>
+          <span id="orderCloudNote">Saved securely.</span>
         </div>
         <p class="form-note">Payment is simulated in this concept store. No card data was stored.</p>
         <div class="checkout__success-actions">
@@ -4977,40 +4986,19 @@ html.has-custom-cursor select { cursor: auto; }
     <div class="sync-panel" role="dialog" aria-modal="true" aria-labelledby="syncTitle">
       <button class="icon-btn sync-panel__close" type="button" data-close aria-label="Close sync centre"><svg class="icon"><use href="#i-close"/></svg></button>
       <header class="sync-panel__head">
-        <p class="eyebrow">ANIIS Cloud — member sync</p>
-        <h2 id="syncTitle">STAY IN <em>SYNC.</em></h2>
-        <p>Orders, delivery updates and a secure cloud receipt — connected to this session in real time.</p>
+        <p class="eyebrow">ANIIS — Your orders</p>
+        <h2 id="syncTitle">YOUR <em>ORDERS.</em></h2>
+        <p>Sign in with Google to keep your order history and delivery updates in one place.</p>
       </header>
       <div class="sync-panel__body">
-        <section class="sync-console" aria-label="Cloud connection">
-          <div class="sync-console__top">
-            <span class="live-pill"><i class="cloud-dot" id="cloudDot"></i><span id="cloudStatus">Connecting</span></span>
-            <span class="sync-console__mode" id="cloudMode">FIRESTORE</span>
-          </div>
-          <div class="sync-orb" id="syncOrb" aria-hidden="true">
-            <span class="sync-orb__ring sync-orb__ring--one"></span>
-            <span class="sync-orb__ring sync-orb__ring--two"></span>
-            <span class="sync-orb__core"><svg class="icon"><use href="#i-cloud"/></svg><b id="syncOrbLabel">SYNC</b></span>
-          </div>
-          <p class="sync-console__detail" id="cloudDetail">Securing your guest session…</p>
-          <div class="sync-stats">
-            <div><strong id="syncOrderCount">0</strong><span>orders saved</span></div>
-            <div><strong id="syncLatency">—</strong><span>last sync</span></div>
-            <div><strong id="syncSession">----</strong><span>secure session</span></div>
-          </div>
-          <button class="btn btn--light btn--full sync-now" type="button" id="syncNowBtn">
-            <svg class="icon"><use href="#i-refresh"/></svg> Sync now
-          </button>
-          <p class="sync-console__note">Writes are queued locally if the connection drops and retried automatically.</p>
-        </section>
         <section class="sync-orders" aria-label="Your orders">
           <header class="sync-orders__head">
-            <div><p class="eyebrow">Cloud receipts</p><h3>Your orders</h3></div>
+            <div><p class="eyebrow">Order history</p><h3>All orders</h3></div>
             <span id="syncOrdersCount">0</span>
           </header>
           <div class="sync-account" id="syncAccount">
             <span class="sync-account__avatar" id="syncAccountAvatar">G</span>
-            <span class="sync-account__copy"><strong id="syncAccountName">Guest session</strong><small id="syncAccountEmail">Secure anonymous profile</small></span>
+            <span class="sync-account__copy"><strong id="syncAccountName">Guest checkout</strong><small id="syncAccountEmail">Sign in to save your orders</small></span>
             <button class="sync-google" type="button" id="syncGoogleBtn"><svg class="icon icon--google"><use href="#i-google"/></svg> Continue with Google</button>
           </div>
           <div class="sync-orders__list" id="syncOrdersList" aria-live="polite">
@@ -5018,7 +5006,7 @@ html.has-custom-cursor select { cursor: auto; }
             <div class="order-skeleton"><i></i><span></span><span></span></div>
             <div class="order-skeleton"><i></i><span></span><span></span></div>
           </div>
-          <p class="sync-orders__foot"><svg class="icon"><use href="#i-shield"/></svg> Orders are encrypted in transit and protected by Firebase rules.</p>
+          <p class="sync-orders__foot"><svg class="icon"><use href="#i-shield"/></svg> Your details stay private and your orders stay secure.</p>
         </section>
       </div>
     </div>
@@ -6925,17 +6913,11 @@ function renderCloudChrome() {
   });
   const footerLabel = $('#footerCloudLabel');
   const footerDetail = $('#footerCloudDetail');
-  if (footerLabel) footerLabel.textContent = cloud ? 'ANIIS Cloud' : 'ANIIS Cloud';
+  if (footerLabel) footerLabel.textContent = 'Your orders';
   if (footerDetail) {
-    footerDetail.textContent = mode === 'live'
-      ? 'Live · orders sync automatically'
-      : mode === 'syncing'
-        ? 'Securing the latest orders…'
-        : mode === 'offline'
-          ? 'Offline · your order is safe'
-          : mode === 'local'
-            ? 'Preview mode · saved on device'
-            : 'Connecting secure sync…';
+    footerDetail.textContent = mode === 'offline'
+      ? 'Offline · your order is safe'
+      : 'Track orders and delivery updates';
   }
 }
 function renderSyncCenter() {
@@ -7006,8 +6988,8 @@ function renderSyncAccount() {
     avatar.style.backgroundImage = user.photoURL ? 'url("' + String(user.photoURL).replace(/"/g, '%22') + '")' : '';
     button.hidden = true;
   } else {
-    name.textContent = 'Guest session';
-    email.textContent = cloud ? 'Anonymous session ? saved on this device' : 'Local preview ? cloud requires hosting';
+    name.textContent = 'Guest checkout';
+    email.textContent = cloud ? 'Sign in to save your orders' : 'Order tracking requires the hosted site';
     avatar.textContent = 'G';
     avatar.style.backgroundImage = '';
     button.hidden = false;
@@ -7033,7 +7015,7 @@ function renderMyOrders() {
     wrap.innerHTML = '<div class="sync-orders__empty">' +
       '<svg class="icon"><use href="#i-cloud"/></svg>' +
       '<h4>No orders yet.</h4>' +
-      '<p>Your first order will appear here instantly — with a live receipt and delivery status.</p>' +
+      '<p>Your first order will appear here automatically, with its delivery status.</p>' +
       '<button class="btn btn--solid" type="button" data-close data-goto="#shop">Explore the edit</button>' +
       '</div>';
     return;
@@ -7050,11 +7032,11 @@ function renderMyOrders() {
           '<span class="sync-order__date">' + cloudEscape(cloudDate(o.createdAtMs || (o.createdAt && o.createdAt.toMillis && o.createdAt.toMillis()))) + '</span>' +
         '</div>' +
         '<p class="sync-order__meta">' + cloudEscape(first) + ' · <strong>' + cloudEscape(money(orderTotals(o))) + '</strong></p>' +
-        '<p class="sync-order__items">' + (pending ? 'Saved on this device · waiting for cloud' : 'Cloud receipt · ' + orderCount(o) + ' pair' + (orderCount(o) === 1 ? '' : 's')) + '</p>' +
+        '<p class="sync-order__items">' + (pending ? 'Saving your order…' : orderCount(o) + ' pair' + (orderCount(o) === 1 ? '' : 's') + ' · delivery updates included') + '</p>' +
       '</div>' +
       '<div class="sync-order__right">' +
         '<span class="sync-order__total">' + cloudEscape(money(orderTotals(o))) + '</span>' +
-        '<span class="sync-order__track"><svg class="icon"><use href="#i-' + (pending ? 'refresh' : 'shield') + '"/></svg> ' + (pending ? 'Pending' : 'Protected') + '</span>' +
+        '<span class="sync-order__track"><svg class="icon"><use href="#i-' + (pending ? 'refresh' : 'shield') + '"/></svg> ' + (pending ? 'Saving' : 'Tracked') + '</span>' +
       '</div>' +
     '</article>';
   }).join('');
@@ -7119,7 +7101,7 @@ async function placeCloudOrder(form) {
   const submit = $('#checkoutSubmit');
   if (submit) {
     submit.disabled = true;
-    submit.innerHTML = 'Securing order · ' + cloudEscape(money(total));
+    submit.innerHTML = 'Placing order · ' + cloudEscape(money(total));
   }
   let savedToCloud = false;
   let error = null;
@@ -7143,8 +7125,8 @@ async function placeCloudOrder(form) {
   saveJSON('aniis-cart', state.cart);
   updateBadges();
   renderCart();
-  if (savedToCloud) showToast('Order ' + orderId + ' saved to ANIIS Cloud.');
-  else showToast('Order ' + orderId + ' saved — will sync when the cloud reconnects.');
+  if (savedToCloud) showToast('Order ' + orderId + ' saved. Thank you!');
+  else showToast('Order ' + orderId + ' saved — we will sync it automatically.');
   if (!savedToCloud && cloud && cloudState.online) flushPendingOrders();
 }
 function showOrderSuccess(payload, cloudSaved, error) {
@@ -7156,8 +7138,8 @@ function showOrderSuccess(payload, cloudSaved, error) {
   const status = $('#orderCloudStatus');
   if (note) {
     note.textContent = cloudSaved
-      ? 'Saved securely to ANIIS Cloud · live receipt ready.'
-      : (error ? 'Saved on this device · cloud retry is queued.' : 'Saved on this device · cloud sync when you are online.');
+      ? 'Saved securely — your receipt is ready.'
+      : (error ? 'Saved on this device — we will sync it automatically.' : 'Saved on this device — syncing when you are online.');
   }
   if (status) status.classList.toggle('is-local', !cloudSaved);
   const main = $('#checkoutMain');

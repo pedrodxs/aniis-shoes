@@ -4111,6 +4111,64 @@ input, select, textarea { font: inherit; color: inherit; }
 .desk-customer-link .icon { width: 11px; height: 11px; }
 .desk-customer-link:hover { color: var(--ink); border-color: var(--ink); }
 
+.desk-store-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 4px;
+  color: rgba(247, 243, 233, .38);
+  font-size: 7px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: color .25s;
+}
+.desk-store-link:hover { color: var(--cream); }
+@media (max-width: 760px) {
+  .desk-store-link { display: none; }
+}
+
+/* compact studio login for small phones and landscape */
+@media (max-width: 760px) and (max-height: 720px) {
+  .desk-login__visual { display: none; }
+  .desk__login { display: block; min-height: calc(100svh - 61px); }
+  .desk-login__form {
+    justify-content: center;
+    min-height: calc(100svh - 61px);
+    padding: 20px 22px 24px;
+  }
+  .desk-login__form h2 { margin: 6px 0 16px; font-size: clamp(2.1rem, 10.5vw, 2.8rem); }
+  .desk-login__form .btn--google { padding: 12px 14px; }
+  .login-divider { margin: 12px 0 2px; }
+  .desk .field input { padding: 9px 0; }
+  .desk-login__form .btn { margin-top: 16px; padding: 13px 16px; }
+  .desk-login__note { margin-top: 11px; }
+  .desk-customer-link { margin-top: 9px; }
+}
+@media (orientation: landscape) and (max-height: 560px) {
+  .desk-login__visual { display: none; }
+  .desk__login { display: block; min-height: calc(100svh - 73px); }
+  .desk-login__form {
+    display: grid;
+    grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr);
+    grid-template-rows: auto auto auto auto auto;
+    column-gap: clamp(24px, 5vw, 56px);
+    align-content: center;
+    min-height: calc(100svh - 73px);
+    padding: 14px clamp(24px, 5vw, 56px);
+  }
+  .desk-login__form .eyebrow { grid-column: 1; grid-row: 1; align-self: end; }
+  .desk-login__form h2 { grid-column: 1; grid-row: 2; margin: 2px 0 12px; font-size: clamp(2.3rem, 6vw, 3.4rem); }
+  .desk-login__form .btn--google { grid-column: 1; grid-row: 3; align-self: start; padding: 11px 14px; }
+  .desk-login__form .login-divider { display: none; }
+  .desk-login__form .field--email { grid-column: 2; grid-row: 1; align-self: end; }
+  .desk-login__form .field--password { grid-column: 2; grid-row: 2; }
+  .desk-login__form .desk-error { grid-column: 2; grid-row: 3; margin: 4px 0 0; }
+  .desk-login__form .btn--light { grid-column: 2; grid-row: 4; margin-top: 10px; padding: 12px 16px; }
+  .desk-login__form .desk-login__note { grid-column: 2; grid-row: 5; margin-top: 7px; }
+  .desk-login__form .desk-customer-link { grid-column: 1; grid-row: 5; align-self: end; margin-top: 7px; }
+}
+
 /* ============================================================
    ANIIS — precision cursor
    ============================================================ */
@@ -4944,10 +5002,6 @@ html.has-custom-cursor select { cursor: auto; }
             <svg class="icon"><use href="#i-refresh"/></svg> Sync now
           </button>
           <p class="sync-console__note">Writes are queued locally if the connection drops and retried automatically.</p>
-          <div class="studio-access">
-            <span><svg class="icon"><use href="#i-lock"/></svg> ANIIS Studio</span>
-            <button class="text-btn" type="button" id="studioAccessBtn">Order desk <svg class="icon"><use href="#i-arrow"/></svg></button>
-          </div>
         </section>
         <section class="sync-orders" aria-label="Your orders">
           <header class="sync-orders__head">
@@ -4999,8 +5053,8 @@ html.has-custom-cursor select { cursor: auto; }
           <h2 id="deskTitle">ENTER THE <em>FLOOR.</em></h2>
           <button class="btn btn--google btn--full" type="button" id="deskGoogleBtn"><svg class="icon icon--google"><use href="#i-google"/></svg> Continue with Google</button>
           <div class="login-divider"><span>or with studio email</span></div>
-          <label class="field"><span>Studio email</span><input type="email" name="email" autocomplete="username" required placeholder="studio@aniis.shoes"></label>
-          <label class="field"><span>Password</span><input type="password" name="password" autocomplete="current-password" required placeholder="••••••••••"></label>
+          <label class="field field--email"><span>Studio email</span><input type="email" name="email" autocomplete="username" required placeholder="studio@aniis.shoes"></label>
+          <label class="field field--password"><span>Password</span><input type="password" name="password" autocomplete="current-password" required placeholder="••••••••••"></label>
           <p class="desk-error" id="deskLoginError" hidden></p>
           <button class="btn btn--light btn--full" type="submit" id="deskLoginBtn">Enter the order desk <svg class="icon"><use href="#i-arrow"/></svg></button>
           <p class="desk-login__note"><svg class="icon"><use href="#i-lock"/></svg> Owner access only. Sessions expire automatically.</p>
@@ -7487,6 +7541,13 @@ function setupCloudEvents() {
         if (result && result.isAdmin) {
           showToast('Google verified. Welcome to the floor.');
           renderDesk();
+        } else if (window.ANIIS_STUDIO_MODE) {
+          const box = $('#deskLoginError');
+          if (box) {
+            box.textContent = 'This is a customer Google account. The studio is reserved for the ANIIS owner ? customers can track orders on the store.';
+            box.hidden = false;
+          }
+          showToast('Customer account ? use the store to track your orders.');
         } else {
           showToast('Signed in with Google. Opening your order sync?');
           window.setTimeout(openSyncCenter, 250);
@@ -7508,6 +7569,7 @@ function setupCloudEvents() {
     customerLink.addEventListener('click', function () {
       const errorBox = $('#deskLoginError');
       if (errorBox) errorBox.hidden = true;
+      if (window.ANIIS_STUDIO_MODE) { window.location.href = '/'; return; }
       openSyncCenter();
     });
   }
@@ -7553,7 +7615,10 @@ function setupCloudEvents() {
       }
     }
   });
-  if (location.hash === '#order-desk') window.setTimeout(openOrderDesk, 400);
+  if (location.hash === '#order-desk') {
+    if (window.ANIIS_STUDIO_MODE) window.setTimeout(openOrderDesk, 200);
+    else window.setTimeout(function () { window.location.href = '/studio'; }, 200);
+  }
   if (location.hash === '#sync' || location.hash === '#track-order') window.setTimeout(openSyncCenter, 400);
 }
 

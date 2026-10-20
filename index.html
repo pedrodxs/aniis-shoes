@@ -7569,7 +7569,7 @@ function setupCloudEvents() {
     customerLink.addEventListener('click', function () {
       const errorBox = $('#deskLoginError');
       if (errorBox) errorBox.hidden = true;
-      if (window.ANIIS_STUDIO_MODE) { window.location.href = '/'; return; }
+      if (window.ANIIS_STUDIO_MODE) { window.location.href = './'; return; }
       openSyncCenter();
     });
   }
@@ -7617,7 +7617,7 @@ function setupCloudEvents() {
   });
   if (location.hash === '#order-desk') {
     if (window.ANIIS_STUDIO_MODE) window.setTimeout(openOrderDesk, 200);
-    else window.setTimeout(function () { window.location.href = '/studio'; }, 200);
+    else window.setTimeout(function () { window.location.href = 'studio.html'; }, 200);
   }
   if (location.hash === '#sync' || location.hash === '#track-order') window.setTimeout(openSyncCenter, 400);
 }

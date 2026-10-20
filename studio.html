@@ -5052,7 +5052,7 @@ html.has-custom-cursor select { cursor: auto; }
     <div class="modal-scrim" data-close></div>
     <div class="desk" role="dialog" aria-modal="true" aria-labelledby="deskTitle">
       <header class="desk__top">
-        <a class="desk__logo" href="/" aria-label="Back to ANIIS store">ANIIS<span>STUDIO</span></a><a class="desk-store-link" href="/">Customer store <svg class="icon"><use href="#i-arrow-up"/></svg></a>
+        <a class="desk__logo" href="./" aria-label="Back to ANIIS store">ANIIS<span>STUDIO</span></a><a class="desk-store-link" href="./">Customer store <svg class="icon"><use href="#i-arrow-up"/></svg></a>
         <div class="desk__signal"><i class="cloud-dot" id="deskCloudDot"></i><span id="deskCloudLabel">Connecting to cloud</span></div>
         <div class="desk__top-actions">
           <button class="desk__sync" type="button" id="deskSyncBtn"><svg class="icon"><use href="#i-refresh"/></svg><span>Sync now</span></button>
@@ -7593,7 +7593,7 @@ function setupCloudEvents() {
     customerLink.addEventListener('click', function () {
       const errorBox = $('#deskLoginError');
       if (errorBox) errorBox.hidden = true;
-      if (window.ANIIS_STUDIO_MODE) { window.location.href = '/'; return; }
+      if (window.ANIIS_STUDIO_MODE) { window.location.href = './'; return; }
       openSyncCenter();
     });
   }
@@ -7641,7 +7641,7 @@ function setupCloudEvents() {
   });
   if (location.hash === '#order-desk') {
     if (window.ANIIS_STUDIO_MODE) window.setTimeout(openOrderDesk, 200);
-    else window.setTimeout(function () { window.location.href = '/studio'; }, 200);
+    else window.setTimeout(function () { window.location.href = 'studio.html'; }, 200);
   }
   if (location.hash === '#sync' || location.hash === '#track-order') window.setTimeout(openSyncCenter, 400);
 }

@@ -5215,6 +5215,7 @@ html.is-lite .product-card:hover .product-card__img {
   .loader__foot { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
+  .loader { display: grid; }
   .loader,
   .loader__inner,
   .loader__shoe,
@@ -7548,16 +7549,14 @@ function setupLoader() {
     document.body.classList.remove('no-scroll');
     window.setTimeout(function () { if (loader) loader.remove(); }, 750);
   };
-  let seen = false;
-  try { seen = sessionStorage.getItem('aniis-intro') === '1'; } catch (e) {}
-  if (!loader || isReduced()) { finish(); return; }
+  if (!loader) { finish(); return; }
 
   document.body.classList.add('no-scroll');
   const bar = $('#loadBar');
   const pct = $('#loadPct');
   const start = performance.now();
-  const minDuration = seen ? 520 : 1000;
-  const maxDuration = 2400;
+  const minDuration = 1200;
+  const maxDuration = 2600;
   let progress = 0;
   let pageReady = document.readyState === 'complete';
   let finished = false;
@@ -7574,7 +7573,7 @@ function setupLoader() {
     if (frame) cancelAnimationFrame(frame);
     paint(100);
     try { sessionStorage.setItem('aniis-intro', '1'); } catch (e) {}
-    window.setTimeout(finish, seen ? 90 : 170);
+    window.setTimeout(finish, 150);
   }
   function tick(now) {
     if (finished) return;

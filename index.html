@@ -32,7 +32,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23121210'/%3E%3Cpath d='M16 5l9 11-9 11-9-11z' fill='none' stroke='%23f2efe8' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='2.5' fill='%23ff4b1f'/%3E%3C/svg%3E">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Store","name":"ANIIS","url":"https://aniis-shoes.web.app/","description":"Curated sneaker storefront featuring Nike, adidas, Jordan, PUMA, New Balance and ASICS.","image":"https://aniis-shoes.web.app/","priceRange":"$90-$220","currenciesAccepted":"USD","paymentAccepted":"Cash, Credit Card","areaServed":"Worldwide"}</script>
-  <script>document.documentElement.classList.add('js');</script>
+  <script>document.documentElement.classList.remove('no-js'); document.documentElement.classList.add('js');</script>
   <style>
 
 @font-face {
@@ -4975,6 +4975,255 @@ html.is-lite .product-card:hover .product-card__img {
   }
 }
 
+/* ============================================================
+   ANIIS — welcome screen
+   A fast, shoe-led opening frame with a real loading bar.
+   ============================================================ */
+.loader {
+  z-index: 4000;
+  overflow: hidden;
+  background: #0d0d0c;
+  color: var(--cream);
+  transition: opacity .5s var(--ease), visibility .5s;
+}
+.loader.is-done {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.loader__ambient {
+  position: absolute;
+  inset: -16%;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 18% 16%, rgba(30, 63, 191, .42), transparent 34%),
+    radial-gradient(circle at 84% 84%, rgba(255, 75, 31, .20), transparent 34%),
+    radial-gradient(circle at 52% 52%, rgba(216, 255, 62, .06), transparent 38%);
+}
+.loader__ambient::after {
+  content: '';
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 52%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(247, 243, 233, .10), transparent);
+  transform: rotate(-8deg);
+}
+.loader__word {
+  z-index: 0;
+  top: 53%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: min(34vw, 560px);
+  color: #151513;
+  -webkit-text-stroke: 1px rgba(247, 243, 233, .055);
+  pointer-events: none;
+}
+.loader__inner {
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  width: min(620px, 88vw);
+  transition: opacity .4s var(--ease), transform .55s var(--ease);
+}
+.loader.is-done .loader__inner {
+  opacity: 0;
+  transform: translateY(-14px);
+}
+.loader__top {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(247, 243, 233, .13);
+}
+.loader__brand {
+  display: flex;
+  align-items: flex-start;
+  gap: 2px;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3.15rem);
+  line-height: .9;
+  letter-spacing: -.02em;
+}
+.loader__brand span {
+  margin-top: .22em;
+  font-family: var(--font-ui);
+  font-size: .5rem;
+  color: var(--acid);
+}
+.loader__season {
+  padding-bottom: 4px;
+  color: rgba(247, 243, 233, .48);
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: .18em;
+  line-height: 1.5;
+  text-align: right;
+  text-transform: uppercase;
+}
+.loader__stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: clamp(170px, 25vh, 250px);
+  margin: 4px 0 0;
+}
+.loader__stage::before {
+  content: '';
+  position: absolute;
+  inset: 9% 0;
+  background:
+    linear-gradient(rgba(247, 243, 233, .045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(247, 243, 233, .045) 1px, transparent 1px);
+  background-size: 56px 56px;
+  opacity: .55;
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 10%, transparent 72%);
+  mask-image: radial-gradient(ellipse at center, #000 10%, transparent 72%);
+}
+.loader__stage::after {
+  content: '';
+  position: absolute;
+  width: min(440px, 82%);
+  height: 82%;
+  background: radial-gradient(ellipse at center, rgba(30, 63, 191, .28), transparent 68%);
+  pointer-events: none;
+}
+.loader__shoe {
+  position: relative;
+  z-index: 2;
+  width: clamp(152px, 29vw, 228px);
+  height: auto;
+  transform: rotate(-12deg);
+  filter: drop-shadow(0 20px 18px rgba(0, 0, 0, .30));
+  animation: welcomeShoe .8s var(--ease) both;
+  user-select: none;
+}
+.loader__runway {
+  position: absolute;
+  z-index: 1;
+  bottom: 17%;
+  left: 12%;
+  width: 76%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(247, 243, 233, .20) 18%, rgba(216, 255, 62, .56) 50%, rgba(247, 243, 233, .20) 82%, transparent);
+}
+.loader__shadow {
+  position: absolute;
+  z-index: 1;
+  bottom: 11%;
+  left: 50%;
+  width: 35%;
+  height: 14px;
+  background: radial-gradient(ellipse, rgba(0, 0, 0, .62), transparent 70%);
+  transform: translateX(-50%);
+}
+.loader__badge {
+  position: absolute;
+  z-index: 3;
+  top: 11%;
+  right: 1%;
+  padding-left: 10px;
+  border-left: 1px solid var(--orange);
+  color: rgba(247, 243, 233, .58);
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: .16em;
+  line-height: 1.75;
+  text-transform: uppercase;
+}
+.loader__copy {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 15px 0 9px;
+  border-top: 1px solid rgba(247, 243, 233, .13);
+  color: rgba(247, 243, 233, .54);
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+.loader__copy strong {
+  color: var(--cream);
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: .04em;
+  font-variant-numeric: tabular-nums;
+}
+.loader__bar {
+  position: relative;
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(247, 243, 233, .13);
+  box-shadow: inset 0 0 0 1px rgba(247, 243, 233, .04);
+  overflow: hidden;
+}
+.loader__bar::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(90deg, transparent 0 9px, rgba(13, 13, 12, .38) 9px 11px);
+  pointer-events: none;
+}
+.loader__bar i {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--orange), #ffd15c 48%, var(--acid));
+  box-shadow: 0 0 18px rgba(255, 75, 31, .38);
+  transition: transform .15s linear;
+}
+.loader__foot {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding-top: 12px;
+  color: rgba(247, 243, 233, .32);
+  font-size: 7px;
+  font-weight: 500;
+  letter-spacing: .13em;
+  line-height: 1.6;
+  text-transform: uppercase;
+}
+.loader__foot span:last-child { color: rgba(216, 255, 62, .62); }
+
+@keyframes welcomeShoe {
+  from { opacity: 0; transform: translateY(20px) rotate(-5deg) scale(.94); }
+  to { opacity: 1; transform: translateY(0) rotate(-12deg) scale(1); }
+}
+
+@media (max-width: 620px) {
+  .loader__inner { width: min(88vw, 420px); }
+  .loader__top { padding-bottom: 12px; }
+  .loader__stage { height: clamp(148px, 24vh, 200px); }
+  .loader__shoe { width: clamp(142px, 40vw, 190px); }
+  .loader__badge { display: none; }
+  .loader__foot span:first-child { max-width: 76%; }
+  .loader__foot span:last-child { display: none; }
+}
+@media (max-width: 380px) {
+  .loader__season { font-size: 7px; letter-spacing: .12em; }
+  .loader__copy { letter-spacing: .12em; }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .loader__stage { height: 108px; }
+  .loader__shoe { width: 140px; }
+  .loader__copy { padding-top: 10px; }
+  .loader__foot { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .loader,
+  .loader__inner,
+  .loader__shoe,
+  .loader__bar i {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
   </style>
 </head>
 <body>
@@ -5016,12 +5265,31 @@ html.is-lite .product-card:hover .product-card__img {
     </symbol>
   </svg>
 
-  <div class="loader" id="loader" aria-hidden="true">
-    <div class="loader__word">ANIIS</div>
+  <div class="loader" id="loader" role="status" aria-live="polite" aria-label="Loading ANIIS">
+    <span class="loader__ambient" aria-hidden="true"></span>
+    <div class="loader__word" aria-hidden="true">ANIIS</div>
     <div class="loader__inner">
-      <div class="loader__brand">ANIIS<span>®</span></div>
-      <div class="loader__meta"><span>Curated sneakers</span><span id="loadPct">00</span></div>
-      <div class="loader__bar"><i id="loadBar"></i></div>
+      <div class="loader__top">
+        <div class="loader__brand">ANIIS<span>®</span></div>
+        <span class="loader__season">SS26 · The sneaker edit</span>
+      </div>
+
+      <div class="loader__stage" aria-hidden="true">
+        <span class="loader__runway"></span>
+        <span class="loader__shadow"></span>
+        <span class="loader__badge">Step into<br>your world</span>
+        <img class="loader__shoe" src="assets/shoes/af1_white-s.webp?v=945bc8763d" alt="" width="240" height="240" fetchpriority="high" draggable="false">
+      </div>
+
+      <div class="loader__copy" aria-hidden="true">
+        <span>Lacing up your pair</span>
+        <strong id="loadPct">00</strong>
+      </div>
+      <div class="loader__bar" aria-hidden="true"><i id="loadBar"></i></div>
+      <div class="loader__foot">
+        <span>Nike · Jordan · adidas · PUMA · New Balance · ASICS</span>
+        <span>Authenticated</span>
+      </div>
     </div>
   </div>
   <div class="scroll-progress" id="scrollProgress" aria-hidden="true"><i></i></div>
@@ -7270,28 +7538,64 @@ function setupScroll() {
 function setupLoader() {
   const loader = $('#loader');
   const finish = function () {
-    if (loader) loader.classList.add('is-done');
+    if (!loader) {
+      document.documentElement.classList.add('is-ready');
+      document.body.classList.remove('no-scroll');
+      return;
+    }
+    loader.classList.add('is-done');
     document.documentElement.classList.add('is-ready');
     document.body.classList.remove('no-scroll');
-    window.setTimeout(function () { if (loader) loader.remove(); }, 900);
+    window.setTimeout(function () { if (loader) loader.remove(); }, 750);
   };
   let seen = false;
   try { seen = sessionStorage.getItem('aniis-intro') === '1'; } catch (e) {}
-  if (!loader || isReduced() || seen || isLite()) { finish(); return; }
+  if (!loader || isReduced()) { finish(); return; }
+
   document.body.classList.add('no-scroll');
   const bar = $('#loadBar');
   const pct = $('#loadPct');
-  let p = 0;
-  const timer = window.setInterval(function () {
-    p = Math.min(100, p + Math.random() * 16 + 7);
-    if (bar) bar.style.transform = 'scaleX(' + (p / 100) + ')';
-    if (pct) pct.textContent = String(Math.round(p)).padStart(2, '0');
-    if (p >= 100) {
-      clearInterval(timer);
-      window.setTimeout(finish, 180);
+  const start = performance.now();
+  const minDuration = seen ? 520 : 1000;
+  const maxDuration = 2400;
+  let progress = 0;
+  let pageReady = document.readyState === 'complete';
+  let finished = false;
+  let frame = 0;
+
+  function paint(value) {
+    const safe = Math.max(0, Math.min(100, value));
+    if (bar) bar.style.transform = 'scaleX(' + (safe / 100) + ')';
+    if (pct) pct.textContent = String(Math.round(safe)).padStart(2, '0');
+  }
+  function complete() {
+    if (finished) return;
+    finished = true;
+    if (frame) cancelAnimationFrame(frame);
+    paint(100);
+    try { sessionStorage.setItem('aniis-intro', '1'); } catch (e) {}
+    window.setTimeout(finish, seen ? 90 : 170);
+  }
+  function tick(now) {
+    if (finished) return;
+    const elapsed = now - start;
+    const linear = Math.min(1, elapsed / Math.max(1, minDuration * .92));
+    const eased = 1 - Math.pow(1 - linear, 2.6);
+    const ceiling = pageReady ? 100 : 91;
+    const target = Math.min(ceiling, 6 + eased * 94);
+    progress += (target - progress) * .18;
+    paint(progress);
+    if ((pageReady && elapsed >= minDuration) || elapsed >= maxDuration) {
+      complete();
+      return;
     }
-  }, 90);
-  try { sessionStorage.setItem('aniis-intro', '1'); } catch (e) {}
+    frame = requestAnimationFrame(tick);
+  }
+
+  paint(0);
+  requestAnimationFrame(tick);
+  if (!pageReady) window.addEventListener('load', function () { pageReady = true; }, { once: true });
+  window.setTimeout(complete, maxDuration + 80);
 }
 
 /* ---------- events ---------- */
